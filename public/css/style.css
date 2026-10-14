@@ -1,0 +1,53 @@
+:root {
+  --ink: #16352d;
+  --muted: #65736b;
+  --paper: #f7f8f3;
+  --orange: #ef8556;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.site-header { padding: 28px 0; border-bottom: 1px solid #e5e9de; }
+.brand { color: var(--ink); text-decoration: none; font-size: 29px; font-weight: 800; letter-spacing: -1.2px; }
+.brand span { font-weight: 400; }
+.brand .brand-dot { color: var(--orange); font-weight: 800; }
+.launch-note { font-size: 13px; color: var(--muted); }
+.hero { padding-top: 82px; padding-bottom: 82px; flex: 1; }
+.eyebrow { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); }
+h1 { max-width: 660px; margin: 25px 0; font-size: clamp(43px, 5.5vw, 76px); font-weight: 750; line-height: 1.05; letter-spacing: -3.2px; }
+.hero-copy { max-width: 460px; font-size: 18px; line-height: 1.7; color: var(--muted); }
+.launch-card { max-width: 460px; margin-top: 35px; padding-top: 24px; border-top: 1px solid #d9dfd1; }
+.launch-label { font-size: 14px; font-weight: 700; }
+.launch-card p { margin-top: 8px; font-size: 14px; color: var(--muted); }
+.bag-scene { position: relative; height: 405px; overflow: hidden; background: #e4ead9; border-radius: 22px; }
+.scene-label { position: absolute; left: 28px; top: 26px; font-size: 10px; font-weight: 700; line-height: 1.6; letter-spacing: 1px; }
+.shopping-bag { position: absolute; top: 150px; left: 50%; width: 205px; height: 215px; transform: translateX(-50%) rotate(-9deg); background: var(--orange); border-radius: 3px 3px 13px 13px; box-shadow: 20px 20px 0 #ccd6be; }
+.bag-handle { position: absolute; top: -72px; left: 59px; width: 87px; height: 97px; border: 9px solid var(--ink); border-bottom: 0; border-radius: 50px 50px 0 0; }
+.bag-brand { position: absolute; left: 29px; top: 81px; font-size: 30px; letter-spacing: -1px; font-weight: 700; }
+.bag-brand span { color: #fff7e9; }
+.scene-spark { position: absolute; font-size: 37px; color: var(--ink); font-weight: 400; }
+.spark-one { top: 102px; right: 37px; }
+.spark-two { bottom: 74px; left: 28px; font-size: 24px; }
+.scene-tag { position: absolute; right: 25px; bottom: 19px; font-size: 10px; color: var(--muted); }
+.site-footer { padding: 24px 0; border-top: 1px solid #e5e9de; font-size: 12px; color: var(--muted); }
+.error-page { flex: 1; padding-top: 85px; padding-bottom: 85px; }
+.error-page h1 { font-size: 80px; }
+.home-link { display: inline-block; margin-top: 16px; color: var(--ink); font-weight: 700; }
+@media (max-width: 575px) {
+  .site-header { padding: 20px 0; }
+  .launch-note { max-width: 110px; font-size: 10px; text-align: right; }
+  .hero { padding-top: 46px; padding-bottom: 46px; }
+  h1 { letter-spacing: -1.8px; }
+  .hero-copy { font-size: 16px; }
+  .bag-scene { height: 370px; }
+  .shopping-bag { top: 132px; height: 205px; }
+}

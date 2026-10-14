@@ -1,6 +1,11 @@
 const settings = require("./settings");
 
-// Sequelize CLI uses this config for the migrations we will add in Step 2.
+// Remember which migrations AND seeders have already run in this database.
 module.exports = {
-  development: settings.database
+  development: {
+    ...settings.database,
+    migrationStorage: "sequelize",
+    seederStorage: "sequelize",
+    seederStorageTableName: "SequelizeData"
+  }
 };

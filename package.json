@@ -1,14 +1,18 @@
 {
   "name": "shopnow",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "ShopNow Step 1: Express, EJS, PostgreSQL and Sequelize project setup.",
+  "description": "ShopNow Step 2: ERD models, database migrations and sample catalogue data.",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "db:check": "node scripts/check-database.js",
-    "check": "node scripts/check-source.js"
+    "check": "node scripts/check-source.js",
+    "db:migrate": "sequelize-cli db:migrate",
+    "db:status": "sequelize-cli db:migrate:status",
+    "db:seed": "sequelize-cli db:seed:all",
+    "db:summary": "node scripts/database-summary.js"
   },
   "engines": {
     "node": ">=22"

@@ -1,14 +1,14 @@
 const sequelize = require("../src/config/database");
+const databaseErrorMessage = require("../src/utils/databaseErrorMessage");
 
 async function checkDatabase() {
   try {
     await sequelize.authenticate();
     console.log("PostgreSQL connection successful.");
-    console.log("Step 1 database connection is ready.");
-  } catch {
+    console.log("The database connection is ready.");
+  } catch (error) {
     console.error("PostgreSQL connection failed.");
-    console.error("Check that PostgreSQL is running and shopnow_db exists.");
-    console.error("Check DB_HOST, DB_PORT, DB_NAME, DB_USER and DB_PASSWORD in .env.");
+    console.error(databaseErrorMessage(error));
     process.exitCode = 1;
   } finally {
     await sequelize.close();

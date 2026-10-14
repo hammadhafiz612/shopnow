@@ -1,6 +1,7 @@
 const app = require("./app");
 const sequelize = require("./config/database");
 const settings = require("./config/settings");
+const databaseErrorMessage = require("./utils/databaseErrorMessage");
 
 async function startServer() {
   try {
@@ -32,9 +33,9 @@ async function startServer() {
 
     process.on("SIGINT", stopServer);
     process.on("SIGTERM", stopServer);
-  } catch {
+  } catch (error) {
     console.error("PostgreSQL connection failed.");
-    console.error("Start PostgreSQL, create shopnow_db, and check DB settings in .env.");
+    console.error(databaseErrorMessage(error));
     console.error("Run npm run db:check after fixing the settings.");
     await sequelize.close();
     process.exitCode = 1;

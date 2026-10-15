@@ -16,9 +16,8 @@
     "auth:setup": "node scripts/setup-session-secret.js",
     "admin:promote": "node scripts/promote-admin.js",
     "mail:process": "node scripts/process-mail.js",
-    "uploads:clean": "node scripts/cleanup-product-images.js",
     "smoke": "node scripts/smoke-check.js",
-    "cleanup:api-reference": "node scripts/cleanup-api-reference.js",
+   
     "verify": "node scripts/verify-project.js",
     "backup": "node scripts/backup-project.js",
     "restore": "node scripts/restore-project.js"

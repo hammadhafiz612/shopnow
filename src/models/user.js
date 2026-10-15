@@ -32,6 +32,12 @@ const User = sequelize.define("User", {
     type: DataTypes.ENUM("customer", "admin"),
     allowNull: false,
     defaultValue: "customer"
+  },
+  auth_version: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+    validate: { isInt: true, min: 0 }
   }
 }, {
   tableName: "users",

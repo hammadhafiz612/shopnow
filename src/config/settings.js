@@ -16,8 +16,26 @@ function readPort(value, defaultPort, name) {
   return port;
 }
 
+const port = readPort(process.env.PORT, 3000, "PORT");
+const notificationMailMode = process.env.MAIL_MODE || "smtp";
+if (!["smtp", "preview"].includes(notificationMailMode)) throw new Error("MAIL_MODE must be smtp or preview.");
+
 module.exports = {
-  port: readPort(process.env.PORT, 3000, "PORT"),
+  port,
+  isProduction: process.env.NODE_ENV === "production",
+  trustProxy: process.env.TRUST_PROXY === "1",
+  sessionSecret: process.env.SESSION_SECRET || "",
+  appUrl: process.env.APP_URL || `http://localhost:${port}`,
+  notificationMailMode,
+  mailWorkerEnabled: process.env.MAIL_WORKER !== "0",
+  mail: {
+    host: process.env.SMTP_HOST || "",
+    port: readPort(process.env.SMTP_PORT, 587, "SMTP_PORT"),
+    secure: process.env.SMTP_SECURE === "true",
+    username: process.env.SMTP_USER || "",
+    password: process.env.SMTP_PASSWORD || "",
+    from: process.env.MAIL_FROM || ""
+  },
   database: {
     database: process.env.DB_NAME || "shopnow_db",
     username: process.env.DB_USER || "postgres",

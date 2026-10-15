@@ -5,10 +5,16 @@ const webRoutes = require("./routes/webRoutes");
 const apiRoutes = require("./routes/apiRoutes");
 const notFound = require("./middleware/notFound");
 const errorHandler = require("./middleware/errorHandler");
+const settings = require("./config/settings");
+const { createSessionMiddleware } = require("./config/session");
+const { loadCurrentUser } = require("./middleware/auth");
+const { shoppingContext } = require("./middleware/shoppingContext");
+const storage = require("./config/storage");
 
 const app = express();
 
 app.disable("x-powered-by");
+if (settings.trustProxy) app.set("trust proxy", 1);
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
@@ -25,9 +31,17 @@ app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: false, limit: "10kb" }));
 
 app.use(express.static(path.join(__dirname, "../public")));
+app.use("/uploads/products", (req, res, next) => {
+  if (!storage.imageFilename.test(req.path.slice(1))) return res.sendStatus(404);
+  next();
+}, express.static(storage.productImages, { index: false, dotfiles: "deny", maxAge: "1d", immutable: true, setHeaders(res) { res.set("Content-Type", "image/webp"); res.set("X-Content-Type-Options", "nosniff"); } }));
 app.use("/vendor/bootstrap", express.static(
   path.join(__dirname, "../node_modules/bootstrap/dist/css")
 ));
+
+app.use(createSessionMiddleware());
+app.use(loadCurrentUser);
+app.use(shoppingContext);
 
 app.use("/", webRoutes);
 app.use("/api", apiRoutes);

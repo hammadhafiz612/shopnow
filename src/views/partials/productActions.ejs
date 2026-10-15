@@ -1,0 +1,14 @@
+<div class="product-actions <%= compact ? 'compact-actions' : 'detail-actions' %>">
+  <form action="/cart/items" method="post" class="add-cart-form">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="productId" value="<%= product.id %>">
+    <input type="hidden" name="returnTo" value="<%= shoppingReturnTo %>">
+    <% if (compact) { %><input type="hidden" name="quantity" value="1">
+    <% } else { %><div class="detail-quantity"><label for="product-quantity">Quantity</label><input id="product-quantity" type="number" name="quantity" value="1" min="1" max="<%= Math.min(99, Math.max(product.stock_quantity, 1)) %>" required<% if (!product.inStock || product.available === false) { %> disabled<% } %>></div><% } %>
+    <button type="submit" class="shop-button add-cart-button"<% if (!product.inStock || product.available === false) { %> disabled<% } %>><%= product.inStock && product.available !== false ? 'Add to cart' : 'Unavailable' %></button>
+  </form>
+  <% if (typeof hideSave === 'undefined' || !hideSave) { %>
+    <% if (currentUser) { %>
+      <form action="/wishlist/items" method="post" class="save-product-form"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="productId" value="<%= product.id %>"><input type="hidden" name="returnTo" value="<%= shoppingReturnTo %>"><button type="submit" class="save-button"><%= compact ? 'Save' : 'Save to wishlist' %></button></form>
+    <% } else { %><a class="save-button" href="/login?next=<%= encodeURIComponent('/products/' + product.id) %>"><%= compact ? 'Save' : 'Sign in to save' %></a><% } %>
+  <% } %>
+</div>

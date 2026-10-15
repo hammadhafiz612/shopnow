@@ -1,0 +1,2 @@
+<div><label for="category-name">Category name *</label><input id="category-name" name="name" maxlength="100" required value="<%= values.name || '' %>"></div>
+<div><label for="category-slug">URL slug *</label><input id="category-slug" name="slug" maxlength="120" pattern="[a-z0-9]+(-[a-z0-9]+)*" required aria-describedby="slug-help" placeholder="home-kitchen" value="<%= values.slug || '' %>"><p class="field-hint" id="slug-help">Use lowercase letters, numbers and hyphens. Deactivating a category hides its products from the storefront.</p></div>

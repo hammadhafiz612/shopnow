@@ -1,0 +1,5 @@
+<%- include("../partials/header") %>
+<main id="main-content" class="container admin-page"><%- include("partials/nav") %><div class="page-heading"><p class="eyebrow">Local email preview</p><h1>A message from ShopNow.</h1><p>Saved for review; this message was not sent to the recipient.</p></div>
+  <article class="commerce-card email-preview-card"><dl class="account-details"><div><dt>To</dt><dd><%= notification.recipient %></dd></div><div><dt>Subject</dt><dd><%= notification.subject %></dd></div></dl><pre class="email-preview-body"><%= notification.text_body %></pre><a class="shop-button" href="/admin/emails/<%= notification.id %>/download">Download .eml &darr;</a></article><a class="back-link" href="/admin/emails">&larr; All notifications</a>
+</main>
+<%- include("../partials/footer") %>

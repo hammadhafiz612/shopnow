@@ -1,8 +1,45 @@
 const express = require("express");
 const { checkHealth } = require("../controllers/healthController");
+const { listProductsApi, getProductApi } = require("../controllers/productController");
+const auth = require("../controllers/authController");
+const adminRoutes = require("./adminApiRoutes");
+const { requireLogin, guestOnly } = require("../middleware/auth");
+const { exposeCsrf, verifyCsrf } = require("../middleware/csrf");
+const limits = require("../middleware/authRateLimits");
+const shopping = require("../controllers/shoppingController");
+const commerce = require("../controllers/commerceController");
 
 const router = express.Router();
 
 router.get("/health", checkHealth);
+router.get("/products", listProductsApi);
+router.get("/products/:id", getProductApi);
+router.get("/auth/csrf", exposeCsrf, auth.csrf);
+router.post("/auth/register", guestOnly, verifyCsrf, limits.registrationLimiter, auth.register);
+router.post("/auth/login", guestOnly, verifyCsrf, limits.loginLimiter, auth.login);
+router.post("/auth/logout", requireLogin, verifyCsrf, auth.logout);
+router.get("/auth/me", requireLogin, auth.me);
+router.post("/auth/forgot-password", verifyCsrf, limits.forgotPasswordLimiter, auth.requestReset);
+router.post("/auth/reset-password", verifyCsrf, limits.resetPasswordLimiter, auth.resetPassword);
+router.use("/admin", adminRoutes);
+router.get("/cart", shopping.showCart);
+router.post("/cart/items", verifyCsrf, shopping.addToCart);
+router.patch("/cart/items/:productId", verifyCsrf, shopping.updateCartItem);
+router.delete("/cart/items/:productId", verifyCsrf, shopping.removeCartItem);
+router.delete("/cart", verifyCsrf, shopping.clearCart);
+router.get("/wishlist", requireLogin, shopping.showWishlist);
+router.post("/wishlist/items", requireLogin, verifyCsrf, shopping.addToWishlist);
+router.delete("/wishlist/items/:productId", requireLogin, verifyCsrf, shopping.removeWishlistItem);
+router.get("/addresses", requireLogin, commerce.showAddresses);
+router.post("/addresses", requireLogin, verifyCsrf, commerce.saveAddress);
+router.put("/addresses/:id", requireLogin, verifyCsrf, commerce.saveAddress);
+router.delete("/addresses/:id", requireLogin, verifyCsrf, commerce.removeAddress);
+router.post("/addresses/:id/default", requireLogin, verifyCsrf, commerce.defaultAddress);
+router.get("/checkout", requireLogin, commerce.showCheckout);
+router.post("/checkout", requireLogin, verifyCsrf, commerce.placeOrder);
+router.get("/orders", requireLogin, commerce.showOrders);
+router.get("/orders/:id", requireLogin, commerce.showOrder);
+router.post("/orders/:id/pay", requireLogin, verifyCsrf, commerce.payOrder);
+router.post("/orders/:id/cancel", requireLogin, verifyCsrf, commerce.cancelOrder);
 
 module.exports = router;

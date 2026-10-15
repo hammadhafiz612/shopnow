@@ -1,0 +1,3 @@
+<% if (address) { %>
+  <address class="delivery-address"><strong><%= address.recipient_name %></strong><span><%= address.line1 %></span><% if (address.line2) { %><span><%= address.line2 %></span><% } %><span><%= [address.city, address.state, address.postal_code].filter(Boolean).join(', ') %></span><span><%= address.country_code %></span><span class="address-phone"><%= address.phone %></span></address>
+<% } else { %><p class="field-hint">No delivery address is available.</p><% } %>

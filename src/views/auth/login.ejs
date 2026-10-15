@@ -1,0 +1,20 @@
+<%- include("../partials/header") %>
+
+<main id="main-content" class="container auth-page">
+  <div class="auth-layout">
+    <%- include("../partials/authIntro", { eyebrow: "Welcome back", heading: "Good to see you again.", copy: "Sign in to access your ShopNow account and discover something for your day." }) %>
+    <section class="auth-card" aria-labelledby="form-title">
+      <h2 id="form-title">Sign in</h2><p class="auth-subtitle">Continue with your email and password.</p>
+      <%- include("../partials/formMessages") %>
+      <form action="/login" method="post" class="auth-form">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="next" value="<%= nextUrl %>">
+        <div><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="254" value="<%= values.email || '' %>"></div>
+        <div><div class="password-label"><label for="password">Password</label><a href="/forgot-password">Forgot password?</a></div><input id="password" name="password" type="password" autocomplete="current-password" required maxlength="72"></div>
+        <button class="shop-button" type="submit">Sign in <span aria-hidden="true">&rarr;</span></button>
+      </form>
+      <p class="auth-switch">New to ShopNow? <a href="/register?next=<%= encodeURIComponent(nextUrl) %>">Create an account</a></p>
+    </section>
+  </div>
+</main>
+
+<%- include("../partials/footer") %>

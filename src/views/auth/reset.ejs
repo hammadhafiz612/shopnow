@@ -1,0 +1,22 @@
+<%- include("../partials/header") %>
+
+<main id="main-content" class="container auth-page">
+  <div class="auth-layout">
+    <%- include("../partials/authIntro", { eyebrow: "Start fresh", heading: "A new password. Back to your day.", copy: "Choose a new password for your ShopNow account, then sign in again." }) %>
+    <section class="auth-card" aria-labelledby="form-title">
+      <h2 id="form-title">Reset password</h2><p class="auth-subtitle">Use a password you have not used before.</p>
+      <%- include("../partials/formMessages") %>
+      <% if (token) { %>
+        <form action="/reset-password" method="post" class="auth-form">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="token" value="<%= token %>">
+          <div><label for="password">New password</label><input id="password" name="password" type="password" autocomplete="new-password" required minlength="12" maxlength="72" aria-describedby="password-help"><p id="password-help" class="field-hint">Use at least 12 characters.</p></div>
+          <div><label for="confirm-password">Confirm new password</label><input id="confirm-password" name="confirmPassword" type="password" autocomplete="new-password" required minlength="12" maxlength="72"></div>
+          <button class="shop-button" type="submit">Reset password <span aria-hidden="true">&rarr;</span></button>
+        </form>
+      <% } else { %><a class="shop-button" href="/forgot-password">Request a new link &rarr;</a><% } %>
+      <p class="auth-switch"><a href="/login">&larr; Back to sign in</a></p>
+    </section>
+  </div>
+</main>
+
+<%- include("../partials/footer") %>

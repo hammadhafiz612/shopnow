@@ -1,0 +1,19 @@
+<%- include("../partials/header") %>
+
+<main id="main-content" class="container auth-page">
+  <div class="auth-layout">
+    <%- include("../partials/authIntro", { eyebrow: "Find your way back", heading: "A fresh start for your account.", copy: "Enter your account email to request a password reset link." }) %>
+    <section class="auth-card" aria-labelledby="form-title">
+      <h2 id="form-title">Forgot your password?</h2><p class="auth-subtitle">We will send you a link to choose a new one.</p>
+      <%- include("../partials/formMessages") %>
+      <form action="/forgot-password" method="post" class="auth-form">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="254" value="<%= values.email || (currentUser ? currentUser.email : '') %>"></div>
+        <button class="shop-button" type="submit">Send reset link <span aria-hidden="true">&rarr;</span></button>
+      </form>
+      <p class="auth-switch"><a href="/login">&larr; Back to sign in</a></p>
+    </section>
+  </div>
+</main>
+
+<%- include("../partials/footer") %>

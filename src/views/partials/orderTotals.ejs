@@ -1,0 +1,3 @@
+<div class="summary-row"><span>Subtotal</span><strong><%= summary.subtotalLabel %></strong></div>
+<div class="summary-row"><span>Discount<% if (summary.couponCode) { %> <small>(<%= summary.couponCode %>)</small><% } %></span><strong>&minus; <%= summary.discountLabel %></strong></div>
+<div class="cart-subtotal"><span>Total</span><strong><%= summary.totalLabel %></strong></div>

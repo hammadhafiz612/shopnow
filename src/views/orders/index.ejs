@@ -1,0 +1,10 @@
+<%- include("../partials/header") %>
+<main id="main-content" class="container shopping-page">
+  <div class="page-heading"><p class="eyebrow">Your ShopNow account</p><h1>Your orders.</h1><p>Find your purchases, payment results and delivery details here.</p></div>
+  <% if (!history.items.length) { %><section class="empty-state"><h2><%= history.total ? 'No orders on this page.' : 'Your first find is waiting.' %></h2><p><%= history.total ? 'Return to the first page to see your orders.' : 'Once you place an order, you can follow it here.' %></p><a class="shop-button" href="<%= history.total ? '/orders' : '/products' %>"><%= history.total ? 'View your orders' : 'Browse products' %> &rarr;</a></section><% } else { %>
+    <div class="order-list"><% history.items.forEach(order => { %><article class="commerce-card order-history-row"><div><p class="eyebrow"><%= order.placedLabel %></p><h2><a href="/orders/<%= order.id %>"><%= order.orderNumber %></a></h2><div class="order-badges"><span class="status-pill">Order: <%= order.orderStatus %></span><span class="status-pill <%= order.paymentStatus === 'paid' ? 'status-success' : '' %>">Payment: <%= order.paymentStatus %></span></div></div><div class="order-history-total"><strong><%= order.totalLabel %></strong><a class="text-link" href="/orders/<%= order.id %>">View order &rarr;</a></div></article><% }); %></div>
+    <nav class="catalogue-pagination" aria-label="Order history pages"><% if (history.page > 1) { %><a href="/orders?page=<%= history.page - 1 %>">&larr; Previous</a><% } %><span class="field-hint">Page <%= history.page %> of <%= history.pages %></span><% if (history.page < history.pages) { %><a href="/orders?page=<%= history.page + 1 %>">Next &rarr;</a><% } %></nav>
+  <% } %>
+  <a class="back-link" href="/account">&larr; Your account</a>
+</main>
+<%- include("../partials/footer") %>

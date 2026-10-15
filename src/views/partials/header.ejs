@@ -3,15 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="ShopNow - your online store, coming soon.">
+  <meta name="description" content="Browse everyday essentials, discover your next favourite, and compare products at ShopNow.">
   <title><%= title %></title>
+  <link rel="icon" type="image/svg+xml" href="/images/product-placeholder.svg">
   <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css">
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header">
     <nav class="container d-flex align-items-center justify-content-between" aria-label="Main navigation">
       <a class="brand" href="/">Shop<span>Now</span><span class="brand-dot" aria-hidden="true">.</span></a>
-      <span class="launch-note">Something good is on its way</span>
+      <div class="nav-links">
+        <a href="/"<% if (typeof activeNav !== "undefined" && activeNav === "home") { %> aria-current="page"<% } %>>Home</a>
+        <a href="/products"<% if (typeof activeNav !== "undefined" && activeNav === "products") { %> aria-current="page"<% } %>>Products</a>
+        <a href="/cart"<% if (typeof activeNav !== "undefined" && activeNav === "cart") { %> aria-current="page"<% } %>>Cart <span class="nav-count"><%= typeof cartCount !== 'undefined' ? cartCount : 0 %></span></a>
+        <a href="/wishlist"<% if (typeof activeNav !== "undefined" && activeNav === "wishlist") { %> aria-current="page"<% } %>>Wishlist<% if (typeof currentUser !== "undefined" && currentUser) { %> <span class="nav-count"><%= typeof wishlistCount !== 'undefined' ? wishlistCount : 0 %></span><% } %></a>
+        <% if (typeof currentUser !== "undefined" && currentUser) { %>
+          <a href="/orders">Orders</a>
+          <a href="/account"<% if (typeof activeNav !== "undefined" && activeNav === "account") { %> aria-current="page"<% } %>>Account</a>
+          <% if (currentUser.role === "admin") { %><a href="/admin"<% if (typeof activeNav !== "undefined" && activeNav === "admin") { %> aria-current="page"<% } %>>Admin</a><% } %>
+          <form action="/logout" method="post" class="nav-logout"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button type="submit">Log out</button></form>
+        <% } else { %>
+          <a href="/login"<% if (typeof activeNav !== "undefined" && activeNav === "login") { %> aria-current="page"<% } %>>Sign in</a>
+          <a href="/register" class="nav-register"<% if (typeof activeNav !== "undefined" && activeNav === "register") { %> aria-current="page"<% } %>>Create account</a>
+        <% } %>
+      </div>
     </nav>
   </header>
+  <% if (typeof shoppingNotice !== "undefined" && shoppingNotice) { %><div class="container"><div class="shopping-notice" role="status"><span><%= shoppingNotice.message %></span><a href="<%= shoppingNotice.href %>"><%= shoppingNotice.label %> &rarr;</a></div></div><% } %>

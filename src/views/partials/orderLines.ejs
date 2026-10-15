@@ -1,0 +1,3 @@
+<ul class="checkout-lines" aria-label="Order items">
+  <% items.forEach(item => { %><li class="checkout-line"><div><strong><%= item.name %></strong><span><%= item.quantity %> &times; <%= item.unitPriceLabel %></span></div><strong><%= item.lineTotalLabel %></strong></li><% }); %>
+</ul>

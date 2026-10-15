@@ -1,6 +1,7 @@
 const sequelize = require("../config/database");
 
 async function checkHealth(req, res) {
+  res.set("Cache-Control", "no-store");
   try {
     await sequelize.authenticate();
 

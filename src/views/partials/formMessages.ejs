@@ -1,0 +1,4 @@
+<% if (errors.length) { %>
+  <div class="auth-errors" role="alert"><p>Please check the following:</p><ul><% errors.forEach(error => { %><li><%= error %></li><% }); %></ul></div>
+<% } %>
+<% if (message) { %><div class="auth-message" role="status"><%= message %></div><% } %>

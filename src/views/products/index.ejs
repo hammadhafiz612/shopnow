@@ -1,0 +1,42 @@
+<%- include("../partials/header") %>
+
+<main id="main-content" class="container catalogue-page">
+  <div class="page-heading"><p class="eyebrow">A little more choice</p><h1>Explore the catalogue.</h1><p>Useful essentials. Everyday favourites. Find what fits you.</p></div>
+  <div class="catalogue-layout">
+    <aside class="filters-panel" aria-labelledby="filter-title">
+      <div class="filter-heading"><h2 id="filter-title">Find your favourites</h2><a href="/products">Reset</a></div>
+      <form action="/products" method="get" class="filter-form">
+        <div class="filter-field"><label for="search">Search products</label><input id="search" type="search" name="q" maxlength="100" value="<%= filters.q %>" placeholder="Name or description"></div>
+        <div class="filter-field"><label for="category">Category</label><select id="category" name="category">
+          <option value="">All categories</option>
+          <% if (filters.category && !categories.some(category => category.slug === filters.category)) { %><option value="<%= filters.category %>" selected>Unavailable category</option><% } %>
+          <% categories.forEach(category => { %><option value="<%= category.slug %>"<% if (filters.category === category.slug) { %> selected<% } %>><%= category.name %></option><% }); %>
+        </select></div>
+        <fieldset class="price-filter"><legend>Price range <span>(PKR)</span></legend><div class="price-fields">
+          <div><label for="min-price">Minimum</label><input id="min-price" type="number" name="minPrice" min="0" max="9999999999.99" step="0.01" value="<%= filters.minPrice %>" placeholder="0"></div>
+          <div><label for="max-price">Maximum</label><input id="max-price" type="number" name="maxPrice" min="0" max="9999999999.99" step="0.01" value="<%= filters.maxPrice %>" placeholder="Any"></div>
+        </div></fieldset>
+        <div class="filter-field"><label for="sort">Sort products</label><select id="sort" name="sort">
+          <% sortOptions.forEach(option => { %><option value="<%= option.value %>"<% if (filters.sort === option.value) { %> selected<% } %>><%= option.label %></option><% }); %>
+        </select></div>
+        <button type="submit" class="shop-button">Apply filters <span aria-hidden="true">&rarr;</span></button>
+      </form>
+    </aside>
+    <section class="catalogue-results" aria-labelledby="results-title">
+      <% if (errors.length) { %>
+        <div class="filter-errors" role="alert"><h2 id="results-title">Please check your filters</h2><ul><% errors.forEach(error => { %><li><%= error %></li><% }); %></ul></div>
+      <% } else { %>
+        <div class="results-heading"><h2 id="results-title"><%= filters.q ? 'Search results' : 'All products' %></h2><p><%= pagination.total ? `${pagination.from}–${pagination.to} of ${pagination.total} products` : '0 products' %></p></div>
+        <% if (filters.q) { %><p class="search-summary">Results for &ldquo;<strong><%= filters.q %></strong>&rdquo;</p><% } %>
+        <% if (products.length) { %>
+          <div class="product-grid catalogue-grid"><% products.forEach(product => { %><%- include("../partials/productCard", { product }) %><% }); %></div>
+          <%- include("../partials/pagination") %>
+        <% } else { %>
+          <div class="empty-state"><p class="eyebrow">A fresh start</p><h3>No products found.</h3><p>Try a different search or a wider price range.</p><a class="shop-button" href="/products">Browse all products &rarr;</a></div>
+        <% } %>
+      <% } %>
+    </section>
+  </div>
+</main>
+
+<%- include("../partials/footer") %>

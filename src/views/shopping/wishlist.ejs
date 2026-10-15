@@ -1,0 +1,23 @@
+<%- include("../partials/header") %>
+
+<main id="main-content" class="container shopping-page">
+  <div class="page-heading"><p class="eyebrow">Saved for another day</p><h1>Keep your favourites close.</h1><p><%= wishlist.count %> saved <%= wishlist.count === 1 ? 'product' : 'products' %>.</p></div>
+  <% if (!wishlist.items.length) { %>
+    <section class="empty-state"><h2>Your wishlist is waiting.</h2><p>Save products from the catalogue and find them here whenever you sign in.</p><a class="shop-button" href="/products">Find your favourites &rarr;</a></section>
+  <% } else { %>
+    <section class="product-grid home-grid" aria-label="Saved products">
+      <% wishlist.items.forEach(product => { %>
+        <article class="product-card wishlist-card">
+          <div class="product-card-link">
+            <div class="product-image"><img src="<%= product.primaryImage.src %>" alt="<%= product.primaryImage.alt %>" width="480" height="400" loading="lazy"></div>
+            <div class="product-card-body"><p class="product-category"><%= product.category.name %></p><h2><% if (product.available) { %><a href="/products/<%= product.id %>"><%= product.name %></a><% } else { %><%= product.name %><% } %></h2><p class="product-price"><%= product.priceLabel %></p><span class="stock-label <%= product.available && product.inStock ? '' : 'out-of-stock' %>"><%= !product.available ? 'Unavailable' : product.inStock ? 'In stock' : 'Out of stock' %></span></div>
+          </div>
+          <%- include("../partials/productActions", { product, compact: true, hideSave: true }) %>
+          <form action="/wishlist/items/<%= product.id %>/remove" method="post" class="wishlist-remove"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="remove-button" type="submit" aria-label="Remove <%= product.name %> from wishlist">Remove from wishlist</button></form>
+        </article>
+      <% }); %>
+    </section>
+  <% } %>
+</main>
+
+<%- include("../partials/footer") %>

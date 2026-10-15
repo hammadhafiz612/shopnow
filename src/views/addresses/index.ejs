@@ -1,0 +1,20 @@
+<%- include("../partials/header") %>
+<main id="main-content" class="container shopping-page">
+  <div class="section-heading"><div class="page-heading"><p class="eyebrow">Your ShopNow account</p><h1>Delivery addresses.</h1><p>Keep your details ready for your next order.</p></div><a class="shop-button" href="/addresses/new">Add address <span aria-hidden="true">+</span></a></div>
+  <% if (!addresses.length) { %>
+    <section class="empty-state"><h2>Where should we deliver?</h2><p>Save your first delivery address to get ready for checkout.</p><a class="text-link" href="/addresses/new">Add your first address &rarr;</a></section>
+  <% } else { %>
+    <div class="address-grid"><% addresses.forEach(address => { %>
+      <article class="commerce-card address-card"><div class="section-heading"><h2><%= address.label || 'Delivery address' %></h2><% if (address.is_default) { %><span class="status-pill">Default</span><% } %></div>
+        <%- include("../partials/deliveryAddress", { address }) %>
+        <div class="address-actions"><a class="text-link" href="/addresses/<%= address.id %>/edit">Edit</a>
+          <% if (!address.is_default) { %><form action="/addresses/<%= address.id %>/default" method="post"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="small-action" type="submit">Make default</button></form><% } %>
+          <form action="/addresses/<%= address.id %>/remove" method="post"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="remove-button" type="submit" aria-label="Remove address <%= address.label || address.line1 %>">Remove</button></form>
+        </div>
+      </article>
+    <% }); %></div>
+    <p class="field-hint"><%= addresses.length %> of <%= maximum %> saved addresses. Changing or removing an address keeps previous order details intact.</p>
+  <% } %>
+  <div class="account-shopping-links"><a class="text-link" href="/account">&larr; Your account</a><a class="text-link" href="/checkout">Continue to checkout &rarr;</a></div>
+</main>
+<%- include("../partials/footer") %>

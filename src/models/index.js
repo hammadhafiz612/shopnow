@@ -14,6 +14,7 @@ const OrderItem = require("./order_item");
 const OrderAddress = require("./order_address");
 const Payment = require("./payment");
 const CouponRedemption = require("./coupon_redemption");
+const MailMessage = require("./mail_message");
 
 // One-to-many: the parent has many rows; each child belongs to one parent.
 User.hasMany(Address, { foreignKey: "user_id", as: "addresses", onDelete: "CASCADE" });
@@ -62,6 +63,12 @@ CouponRedemption.belongsTo(User, { foreignKey: "user_id", as: "user", onDelete: 
 Coupon.hasMany(CouponRedemption, { foreignKey: "coupon_id", as: "redemptions", onDelete: "RESTRICT" });
 CouponRedemption.belongsTo(Coupon, { foreignKey: "coupon_id", as: "coupon", onDelete: "RESTRICT" });
 
+// Infrastructure outbox relationships preserve the message snapshot if an account/order is removed.
+User.hasMany(MailMessage, { foreignKey: "user_id", as: "notifications", onDelete: "SET NULL" });
+MailMessage.belongsTo(User, { foreignKey: "user_id", as: "recipientUser", onDelete: "SET NULL" });
+Order.hasMany(MailMessage, { foreignKey: "order_id", as: "notifications", onDelete: "SET NULL" });
+MailMessage.belongsTo(Order, { foreignKey: "order_id", as: "order", onDelete: "SET NULL" });
+
 // Many-to-many links use the same junction tables and their existing foreign keys.
 // constraints: false here avoids redefining the direct foreign-key associations above.
 User.belongsToMany(Product, { through: Wishlist, foreignKey: "user_id", otherKey: "product_id", as: "wishlistProducts", constraints: false });
@@ -76,5 +83,5 @@ Coupon.belongsToMany(User, { through: { model: CouponRedemption, unique: false }
 
 module.exports = {
   sequelize, User, Address, PasswordResetToken, Category, Product, ProductImage,
-  Cart, CartItem, Wishlist, Coupon, Order, OrderItem, OrderAddress, Payment, CouponRedemption
+  Cart, CartItem, Wishlist, Coupon, Order, OrderItem, OrderAddress, Payment, CouponRedemption, MailMessage
 };

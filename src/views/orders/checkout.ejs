@@ -1,0 +1,29 @@
+<%- include("../partials/header") %>
+<main id="main-content" class="container shopping-page">
+  <div class="page-heading"><p class="eyebrow">One step closer</p><h1>Make it yours.</h1><p>Review your delivery details and order before confirming.</p></div>
+  <%- include("../partials/formMessages", { errors, message: '' }) %>
+  <% if (!checkout.items.length) { %>
+    <section class="empty-state"><h2>Your cart is empty.</h2><p>Add a product to start your order.</p><a class="shop-button" href="/products">Browse products &rarr;</a></section>
+  <% } else { %>
+    <div class="cart-layout checkout-layout"><div class="commerce-stack">
+      <section class="commerce-card"><div class="section-heading"><h2>01. Delivery &amp; discount</h2><a class="text-link" href="/addresses/new?next=checkout">Add address &rarr;</a></div>
+        <% if (checkout.addresses.length) { %>
+          <form action="/checkout" method="post" class="commerce-form" id="checkout-review">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="checkoutKey" value="<%= checkout.checkoutKey %>"><input type="hidden" name="quoteToken" value="<%= checkout.quoteToken %>">
+            <div><label for="delivery-address">Deliver to</label><select id="delivery-address" name="addressId"><% checkout.addresses.forEach(address => { %><option value="<%= address.id %>"<% if (String(address.id) === checkout.addressId) { %> selected<% } %>><%= address.label || address.recipient_name %> &mdash; <%= address.line1 %>, <%= address.city %><%= address.is_default ? ' (Default)' : '' %></option><% }); %></select></div>
+            <div><label for="coupon-code">Coupon code <span class="optional-label">(optional)</span></label><div class="coupon-input"><input id="coupon-code" name="couponCode" maxlength="50" value="<%= checkout.couponCode %>" placeholder="Enter your code"><button class="small-action" type="submit" formaction="/checkout/review">Update review</button></div><p class="field-hint">Change an address or coupon, then update your review. Clear the code to remove a coupon.</p></div>
+          </form>
+          <div class="selected-delivery"><p class="eyebrow">Selected delivery address</p><%- include("../partials/deliveryAddress", { address: checkout.deliveryAddress }) %></div>
+        <% } else { %><p>Save a delivery address before confirming your order.</p><a class="shop-button" href="/addresses/new?next=checkout">Add delivery address &rarr;</a><% } %>
+      </section>
+      <section class="commerce-card"><div class="section-heading"><h2>02. Your items</h2><a class="text-link" href="/cart">Edit cart</a></div><%- include("../partials/orderLines", { items: checkout.items }) %></section>
+    </div><aside class="cart-summary checkout-summary" aria-labelledby="checkout-total-title"><p class="eyebrow">Order summary</p><h2 id="checkout-total-title"><%= checkout.itemCount %> <%= checkout.itemCount === 1 ? 'item' : 'items' %>, all yours.</h2>
+      <%- include("../partials/orderTotals", { summary: checkout }) %>
+      <p>All amounts are in PKR. There are no additional delivery or tax charges.</p>
+      <div class="place-order-form"><button class="shop-button" type="submit" form="checkout-review"<% if (!checkout.quoteToken) { %> disabled<% } %>>Confirm order &rarr;</button></div>
+      <p class="field-hint">Your review is valid for 15 minutes. Confirming reserves stock and any coupon usage. Complete the demo payment on the next page, or cancel the unpaid order to release them.</p>
+      <div class="demo-note"><strong>Demo store</strong><span>Payment is simulated. No money will be charged.</span></div>
+    </aside></div>
+  <% } %>
+</main>
+<%- include("../partials/footer") %>

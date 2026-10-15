@@ -1,0 +1,12 @@
+<article class="product-card">
+  <a class="product-card-link" href="/products/<%= product.id %>">
+    <div class="product-image"><img src="<%= product.primaryImage.src %>" alt="<%= product.primaryImage.alt %>" width="480" height="400" loading="lazy"></div>
+    <div class="product-card-body">
+      <p class="product-category"><%= product.category.name %></p>
+      <h3><%= product.name %></h3>
+      <p class="product-price"><%= product.priceLabel %></p>
+      <div class="product-card-bottom"><span class="stock-label <%= product.inStock ? '' : 'out-of-stock' %>"><%= product.inStock ? 'In stock' : 'Out of stock' %></span><span class="detail-link">View details &rarr;</span></div>
+    </div>
+  </a>
+  <%- include("productActions", { product, compact: true }) %>
+</article>

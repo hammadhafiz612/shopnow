@@ -1,0 +1,11 @@
+<% if (pagination.totalPages > 1) { %>
+  <nav class="catalogue-pagination" aria-label="Product pages">
+    <% if (pagination.page > 1) { %><a href="<%= pageUrl(pagination.page - 1) %>" rel="prev">&larr; Previous</a><% } %>
+    <% pageNumbers.forEach(page => { %>
+      <% if (page === null) { %><span class="page-gap" aria-hidden="true">&hellip;</span>
+      <% } else if (page === pagination.page) { %><span class="current-page" aria-current="page" aria-label="Page <%= page %>"><%= page %></span>
+      <% } else { %><a href="<%= pageUrl(page) %>" aria-label="Page <%= page %>"><%= page %></a><% } %>
+    <% }); %>
+    <% if (pagination.page < pagination.totalPages) { %><a href="<%= pageUrl(pagination.page + 1) %>" rel="next">Next &rarr;</a><% } %>
+  </nav>
+<% } %>

@@ -1,0 +1,22 @@
+<%- include("../partials/header") %>
+
+<main id="main-content" class="container auth-page">
+  <div class="auth-layout">
+    <%- include("../partials/authIntro", { eyebrow: "Make yourself at home", heading: "Your everyday finds start here.", copy: "Create your ShopNow account and make your next visit a little easier." }) %>
+    <section class="auth-card" aria-labelledby="form-title">
+      <h2 id="form-title">Create an account</h2><p class="auth-subtitle">A few details, and you are ready to go.</p>
+      <%- include("../partials/formMessages") %>
+      <form action="/register" method="post" class="auth-form">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="next" value="<%= nextUrl %>">
+        <div><label for="full-name">Full name</label><input id="full-name" name="full_name" type="text" autocomplete="name" required maxlength="100" value="<%= values.full_name || '' %>"></div>
+        <div><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="254" value="<%= values.email || '' %>"></div>
+        <div><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="new-password" required minlength="12" maxlength="72" aria-describedby="password-help"><p id="password-help" class="field-hint">Use at least 12 characters.</p></div>
+        <div><label for="confirm-password">Confirm password</label><input id="confirm-password" name="confirmPassword" type="password" autocomplete="new-password" required minlength="12" maxlength="72"></div>
+        <button class="shop-button" type="submit">Create account <span aria-hidden="true">&rarr;</span></button>
+      </form>
+      <p class="auth-switch">Already have an account? <a href="/login?next=<%= encodeURIComponent(nextUrl) %>">Sign in</a></p>
+    </section>
+  </div>
+</main>
+
+<%- include("../partials/footer") %>
